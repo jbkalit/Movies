@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Movies</string>
+
+    <string name="overview">Overview</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+
+    <string name="network_not_available">Tidak ada koneksi internet</string>
+    <string name="network_available">Terhubung ke internet</string>
+    <string name="no_internet">%1$s Tarik kebawah untuk mencoba lagi</string>
+
+    <string name="generic_error">Something went wrong.</string>
+    <string name="no_results">Tidak ada data ditemukan</string>
+
+</resources>
