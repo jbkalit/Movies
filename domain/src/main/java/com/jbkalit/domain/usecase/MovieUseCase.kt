@@ -7,6 +7,7 @@ import com.jbkalit.domain.model.request.Reviews
 import com.jbkalit.domain.model.request.Videos
 import com.jbkalit.domain.repository.MovieRepositoryContract
 import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MovieUseCase @Inject constructor(private val genreRepository: MovieRepositoryContract)
@@ -16,7 +17,7 @@ class MovieUseCase @Inject constructor(private val genreRepository: MovieReposit
         return genreRepository.getGenreList()
     }
 
-    override fun getMoviesByGenre(page: Int, id: Int): Single<Movies> {
+    override suspend fun getMoviesByGenre(page: Int, id: Int): Flow<Movies> {
         return genreRepository.getMoviesByGenre(page, id)
     }
 

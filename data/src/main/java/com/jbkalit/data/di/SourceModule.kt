@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -17,7 +18,12 @@ class SourceModule {
     @Provides
     @Singleton
     fun providesUserRemoteDataSource(movieService: MovieService,
-                                     schedulerProvider: BaseSchedulerProvider)
-            : MovieRemoteDataSourceContract = MovieRemoteDataSource(movieService, schedulerProvider)
+                                     schedulerProvider: BaseSchedulerProvider,
+                                     dispatcher: CoroutineDispatcher)
+    : MovieRemoteDataSourceContract = MovieRemoteDataSource(
+        movieService,
+        schedulerProvider,
+        dispatcher
+    )
 
 }

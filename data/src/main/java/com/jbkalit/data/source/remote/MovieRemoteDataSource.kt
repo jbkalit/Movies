@@ -8,10 +8,13 @@ import com.jbkalit.domain.model.request.Movies
 import com.jbkalit.domain.model.request.Reviews
 import com.jbkalit.domain.model.request.Videos
 import io.reactivex.Single
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MovieRemoteDataSource @Inject constructor(private val movieService: MovieService,
-                                                private val schedulerProvider: BaseSchedulerProvider)
+                                                private val schedulerProvider: BaseSchedulerProvider,
+                                                private val dispatcher: CoroutineDispatcher)
     : MovieRemoteDataSourceContract {
 
     override fun getGenreList(): Single<Genres> {
@@ -20,10 +23,10 @@ class MovieRemoteDataSource @Inject constructor(private val movieService: MovieS
             .observeOn(schedulerProvider.ui())
     }
 
-    override fun getMoviesByGenre(page: Int, id: Int): Single<Movies> {
-        return movieService.getMoviesByGenre(page, id)
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
+    override suspend fun getMoviesByGenre(page: Int, id: Int): Movies {
+        return withContext(dispatcher) {
+            movieService.getMoviesByGenre(page, id)
+        }
     }
 
     override fun getMovieById(id: Int): Single<Movie> {

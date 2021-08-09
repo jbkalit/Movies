@@ -11,7 +11,7 @@ interface MovieRemoteDataSourceContract {
 
     fun getGenreList(): Single<Genres>
 
-    fun getMoviesByGenre(page: Int, id: Int): Single<Movies>
+    suspend fun getMoviesByGenre(page: Int, id: Int): Movies
 
     fun getMovieById(id: Int): Single<Movie>
 

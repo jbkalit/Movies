@@ -8,6 +8,8 @@ import com.jbkalit.domain.model.request.Reviews
 import com.jbkalit.domain.model.request.Videos
 import com.jbkalit.domain.repository.MovieRepositoryContract
 import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,8 +22,8 @@ constructor(private val movieRemoteDataSource: MovieRemoteDataSourceContract)
         return movieRemoteDataSource.getGenreList()
     }
 
-    override fun getMoviesByGenre(page: Int, id: Int): Single<Movies> {
-        return movieRemoteDataSource.getMoviesByGenre(page, id)
+    override fun getMoviesByGenre(page: Int, id: Int): Flow<Movies> {
+        return flow { emit(movieRemoteDataSource.getMoviesByGenre(page, id)) }
     }
 
     override fun getMovieById(id: Int): Single<Movie> {

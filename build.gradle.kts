@@ -1,17 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    apply from: 'dependencies.gradle'
 
+buildscript {
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath build_plugins.android_gradle
-        classpath build_plugins.kotlin_gradle
-        classpath build_plugins.kotlin_extension
-        classpath build_plugins.navigation_args
-        classpath build_plugins.hilt
+        classpath(Dependency.BuildPlugin.ANDROID_GRADLE)
+        classpath(Dependency.BuildPlugin.KOTLIN_GRADLE)
+        classpath(Dependency.BuildPlugin.KOTLIN_EXT)
+        classpath(Dependency.BuildPlugin.NAVIGATION_ARGS)
+        classpath(Dependency.BuildPlugin.HILT)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,11 +20,10 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven { url "https://jitpack.io" }
         jcenter()
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }

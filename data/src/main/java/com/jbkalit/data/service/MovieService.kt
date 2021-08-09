@@ -17,7 +17,7 @@ interface MovieService {
 
     @GET("discover/movie")
     fun getMoviesByGenre(@Query("page") page: Int,
-                         @Query("with_genres") with_genres: Int): Single<Movies>
+                         @Query("with_genres") with_genres: Int): Movies
 
     @GET("movie/{movie_id}")
     fun getMovieById(@Path("movie_id") id: Int): Single<Movie>
