@@ -8,13 +8,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion = Version.target_sdk
+    compileSdk = Version.compile_sdk
     buildToolsVersion = Version.build_tools
 
     defaultConfig {
         applicationId = "com.jbkalit.movies"
-        minSdkVersion = Version.min_sdk
-        targetSdkVersion = Version.target_sdk
+        minSdk = Version.min_sdk
+        targetSdk = Version.target_sdk
         versionCode = Version.version_code
         versionName = Version.version_name
 
@@ -25,15 +25,15 @@ android {
 
     buildTypes {
         getByName("debug") {
-            shrinkResources = false
-            minifyEnabled = false
-            debuggable = true
+            isShrinkResources = false
+            isMinifyEnabled = false
+            isDebuggable = true
         }
 
         getByName("release") {
-            shrinkResources = true
-            minifyEnabled = true
-            debuggable = false
+            isShrinkResources = true
+            isMinifyEnabled = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -72,7 +72,6 @@ dependencies {
     implementation(Dependency.MATERIAL)
     implementation(Dependency.CONSTRAINT_LAYOUT)
     implementation(Dependency.LEGACY_SUPPORT)
-    implementation(Dependency.LIFECYCLE_EXTENSION)
     implementation(Dependency.VIEWMODEL)
     implementation(Dependency.LIVEDATA)
     implementation(Dependency.FRAGMENT_KTX)
@@ -88,6 +87,7 @@ dependencies {
 
     // retrofit
     implementation(Dependency.Network.RETROFIT)
+    implementation(Dependency.Network.RETROFIT_RXJAVA)
     implementation(Dependency.Network.RETROFIT_GSON)
 
     // rxjava
@@ -98,6 +98,7 @@ dependencies {
     implementation(Dependency.Asynchronous.COROUTINES)
 
     // hilt
+    kapt(Dependency.DI.HILT_ANDROID_COMPILER)
     implementation(Dependency.DI.HILT)
 
     // test

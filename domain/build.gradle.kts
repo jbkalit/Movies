@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion = Version.target_sdk
+    compileSdk = Version.compile_sdk
     buildToolsVersion = Version.build_tools
 
     defaultConfig {
-        minSdkVersion = Version.min_sdk
-        targetSdkVersion = Version.target_sdk
+        minSdk = Version.min_sdk
+        targetSdk = Version.target_sdk
         versionCode = Version.version_code
         versionName = Version.version_name
 
@@ -47,6 +47,7 @@ dependencies {
 
     // retrofit
     implementation(Dependency.Network.RETROFIT)
+    implementation(Dependency.Network.RETROFIT_RXJAVA)
     implementation(Dependency.Network.RETROFIT_GSON)
 
     // rxjava

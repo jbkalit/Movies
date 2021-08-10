@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion = Version.target_sdk
+    compileSdk = Version.compile_sdk
     buildToolsVersion = Version.build_tools
 
     defaultConfig {
-        minSdkVersion = Version.min_sdk
-        targetSdkVersion = Version.target_sdk
+        minSdk = Version.min_sdk
+        targetSdk = Version.target_sdk
         versionCode = Version.version_code
         versionName = Version.version_name
 
@@ -21,8 +21,8 @@ android {
 
     buildTypes {
         all {
-            buildConfigField(Type.STRING, "BASE_URL", "https://api.themoviedb.org/3/")
-            buildConfigField(Type.String, "API_KEY", "4a1d7511bfd1a9f667baed42273a1133")
+            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "API_KEY", "\"b56640566d2644075c08a4adc089b927\"")
         }
 
         getByName("release") {
@@ -41,7 +41,6 @@ android {
         jvmTarget = "1.8"
     }
     testOptions {
-        unitTests.returnDefaultValues = true
         animationsDisabled = true
     }
 }
@@ -64,6 +63,7 @@ dependencies {
 
     // rxjava
     implementation(Dependency.Asynchronous.RX_JAVA)
+    implementation(Dependency.Network.RETROFIT_RXJAVA)
     implementation(Dependency.Asynchronous.RX_ANDROID)
 
     // coroutines
