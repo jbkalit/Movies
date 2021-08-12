@@ -1,21 +1,18 @@
 package com.jbkalit.movies.presentation.movie.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jbkalit.data.util.BASE_URL_POSTER_SIZE_500
 import com.jbkalit.domain.model.Movie
 import com.jbkalit.movies.databinding.ViewMovieItemBinding
 
-class MovieAdapter(
-    private var movieList: MutableList<Movie>,
-    private val listener: OnMovieClickedListener
-) : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieResponseItemDiffCallback()) {
-
-    override fun getItemCount() = movieList.size
+class MovieAdapter(private val listener: OnMovieClickedListener)
+    : PagingDataAdapter<Movie, RecyclerView.ViewHolder>(MovieResponseItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
@@ -24,7 +21,10 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ViewHolder).bind(movieList[position])
+        getItem(position)?.let {
+            Log.d("PAGINGDATA", it.originalTitle!!)
+            (holder as ViewHolder).bind(it)
+        }
     }
 
     inner class ViewHolder(private val binding: ViewMovieItemBinding) :
@@ -53,16 +53,6 @@ class MovieAdapter(
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem == newItem
         }
-    }
-
-    fun addToList(movieList: MutableList<Movie>) {
-        this.movieList.addAll(movieList)
-        notifyDataSetChanged()
-    }
-
-    fun clearList() {
-        this.movieList.clear()
-        notifyDataSetChanged()
     }
 
     interface OnMovieClickedListener {

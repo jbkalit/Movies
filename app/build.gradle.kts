@@ -101,6 +101,9 @@ dependencies {
     kapt(Dependency.DI.HILT_ANDROID_COMPILER)
     implementation(Dependency.DI.HILT)
 
+    // paging
+    implementation(Dependency.Pagination.PAGING)
+
     // test
     testImplementation(Dependency.Mock.MOCKITO)
     androidTestImplementation(Dependency.Mock.MOCKITO_ANDROID)

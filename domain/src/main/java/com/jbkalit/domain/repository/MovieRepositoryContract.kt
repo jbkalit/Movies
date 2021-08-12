@@ -1,5 +1,6 @@
 package com.jbkalit.domain.repository
 
+import androidx.paging.PagingData
 import com.jbkalit.domain.model.Movie
 import com.jbkalit.domain.model.request.Genres
 import com.jbkalit.domain.model.request.Movies
@@ -19,5 +20,7 @@ interface MovieRepositoryContract {
     fun getReviewByMovieId(id: Int, page: Int): Single<Reviews>
 
     fun getVideoByMovieId(id: Int): Single<Videos>
+
+    suspend fun getMovieByGenrePagingFlow(query: Int): Flow<PagingData<Movie>>
 
 }

@@ -44,5 +44,6 @@ object Version {
     const val rx_android = "2.1.1"
     const val rx_kotlin = "2.3.0"
     const val coroutines = "1.3.9"
+    const val paging = "3.0.1"
 
 }

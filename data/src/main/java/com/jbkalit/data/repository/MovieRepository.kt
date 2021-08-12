@@ -1,6 +1,11 @@
 package com.jbkalit.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.jbkalit.data.service.MovieService
 import com.jbkalit.data.source.remote.MovieRemoteDataSourceContract
+import com.jbkalit.data.source.paging.MoviesPagingSource
 import com.jbkalit.domain.model.Movie
 import com.jbkalit.domain.model.request.Genres
 import com.jbkalit.domain.model.request.Movies
@@ -15,8 +20,8 @@ import javax.inject.Singleton
 
 @Singleton
 class MovieRepository @Inject
-constructor(private val movieRemoteDataSource: MovieRemoteDataSourceContract)
-    : MovieRepositoryContract {
+constructor(private val movieRemoteDataSource: MovieRemoteDataSourceContract,
+            private val movieService: MovieService) : MovieRepositoryContract {
 
     override fun getGenreList(): Single<Genres> {
         return movieRemoteDataSource.getGenreList()
@@ -36,6 +41,16 @@ constructor(private val movieRemoteDataSource: MovieRemoteDataSourceContract)
 
     override fun getVideoByMovieId(id: Int): Single<Videos> {
         return movieRemoteDataSource.getVideoByMovieId(id)
+    }
+
+    override suspend fun getMovieByGenrePagingFlow(query: Int): Flow<PagingData<Movie>> {
+        return Pager(config = getPageConfig(), pagingSourceFactory = {
+            MoviesPagingSource(movieService, query)
+        }).flow
+    }
+
+    private fun getPageConfig(): PagingConfig {
+        return PagingConfig(pageSize = 20, initialLoadSize = 5, enablePlaceholders = false)
     }
 
 }

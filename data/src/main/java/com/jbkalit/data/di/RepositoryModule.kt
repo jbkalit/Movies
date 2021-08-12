@@ -1,6 +1,7 @@
 package com.jbkalit.data.di
 
 import com.jbkalit.data.repository.MovieRepository
+import com.jbkalit.data.service.MovieService
 import com.jbkalit.data.source.remote.MovieRemoteDataSourceContract
 import com.jbkalit.domain.repository.MovieRepositoryContract
 import dagger.Module
@@ -15,7 +16,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesMovieRepository(movieRemoteDataSource: MovieRemoteDataSourceContract)
-            : MovieRepositoryContract = MovieRepository(movieRemoteDataSource)
+    fun providesMovieRepository(movieRemoteDataSource: MovieRemoteDataSourceContract,
+                                movieService: MovieService)
+            : MovieRepositoryContract = MovieRepository(movieRemoteDataSource, movieService)
 
 }

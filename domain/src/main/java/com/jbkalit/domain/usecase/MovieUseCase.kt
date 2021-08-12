@@ -1,5 +1,6 @@
 package com.jbkalit.domain.usecase
 
+import androidx.paging.PagingData
 import com.jbkalit.domain.model.Movie
 import com.jbkalit.domain.model.request.Genres
 import com.jbkalit.domain.model.request.Movies
@@ -10,27 +11,31 @@ import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MovieUseCase @Inject constructor(private val genreRepository: MovieRepositoryContract)
+class MovieUseCase @Inject constructor(private val movieRepository: MovieRepositoryContract)
     : MovieUseCaseContract {
 
     override fun getGenreList() : Single<Genres> {
-        return genreRepository.getGenreList()
+        return movieRepository.getGenreList()
     }
 
     override suspend fun getMoviesByGenre(page: Int, id: Int): Flow<Movies> {
-        return genreRepository.getMoviesByGenre(page, id)
+        return movieRepository.getMoviesByGenre(page, id)
     }
 
     override fun getMovieById(id: Int): Single<Movie> {
-        return genreRepository.getMovieById(id)
+        return movieRepository.getMovieById(id)
     }
 
     override fun getReviewByMovieId(id: Int, page: Int): Single<Reviews> {
-        return genreRepository.getReviewByMovieId(id, page)
+        return movieRepository.getReviewByMovieId(id, page)
     }
 
     override fun getVideoByMovieId(id: Int): Single<Videos> {
-        return genreRepository.getVideoByMovieId(id)
+        return movieRepository.getVideoByMovieId(id)
+    }
+
+    override suspend fun getMovieByGenrePagingFlow(query: Int): Flow<PagingData<Movie>> {
+        return movieRepository.getMovieByGenrePagingFlow(query)
     }
 
 }

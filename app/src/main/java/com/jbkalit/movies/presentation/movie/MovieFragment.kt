@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.jbkalit.movies.databinding.FragmentListMovieBinding
 import com.jbkalit.movies.presentation.ext.setGone
 import com.jbkalit.movies.presentation.ext.setVisible
@@ -20,6 +20,8 @@ import com.jbkalit.movies.presentation.movie.viewmodel.MovieViewModel
 import com.jbkalit.movies.util.navigate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_movie.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MovieFragment : Fragment(), MovieAdapter.OnMovieClickedListener {
@@ -29,12 +31,6 @@ class MovieFragment : Fragment(), MovieAdapter.OnMovieClickedListener {
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var binding: FragmentListMovieBinding
     private lateinit var adapter: MovieAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.getInt(MOVIE_GENRE_ID)?.let { movieViewModel.fetchMovie(it) }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,9 +48,10 @@ class MovieFragment : Fragment(), MovieAdapter.OnMovieClickedListener {
         setupErrorObserver()
         setupEmptyObserver()
         setupLoadingObserver()
-        setupObserver()
         setupLoadMoreObserver()
         setupLoadMoreErrorObserver()
+
+        arguments?.getInt(MOVIE_GENRE_ID)?.let { fetchDataMovie(it) }
     }
 
     private fun setupView() {
@@ -64,35 +61,17 @@ class MovieFragment : Fragment(), MovieAdapter.OnMovieClickedListener {
             movieRecyclerView.layoutManager = gridLayoutManager
             movieRecyclerView.setHasFixedSize(true)
             movieRecyclerView.itemAnimator = DefaultItemAnimator()
-            adapter = MovieAdapter(mutableListOf(), this@MovieFragment)
+            adapter = MovieAdapter(this@MovieFragment)
             movieRecyclerView.adapter = adapter
-
-            movieRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy > 0) {
-                        val visibleItemCount = gridLayoutManager.childCount
-                        val pastVisibleItem =
-                            gridLayoutManager.findLastCompletelyVisibleItemPosition()
-                        val total = adapter.itemCount
-                        if ((visibleItemCount + pastVisibleItem) >= total) {
-                            arguments?.getInt(MOVIE_GENRE_ID)?.let { movieViewModel.loadMore(it) }
-                        }
-                    }
-                    super.onScrolled(recyclerView, dx, dy)
-                }
-            })
         }
     }
 
-
-    private fun setupObserver() {
-        movieViewModel.movie.observe(viewLifecycleOwner, { response ->
-            response?.let {
-                emptyLayout.setGone()
-                movieRecyclerView.setVisible()
-                adapter.addToList(it.toMutableList())
+    private fun fetchDataMovie(query: Int) {
+        lifecycleScope.launch {
+            movieViewModel.fetchMovie(query).collectLatest {
+                adapter.submitData(it)
             }
-        })
+        }
     }
 
     private fun setupErrorObserver() {

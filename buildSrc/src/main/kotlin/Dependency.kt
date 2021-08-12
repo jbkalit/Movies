@@ -72,6 +72,10 @@ object Dependency {
         const val MOCKK = "io.mockk:mockk:${Version.mockk}"
     }
 
+    object Pagination {
+        const val PAGING = "androidx.paging:paging-runtime:${Version.paging}"
+    }
+
     object Test {
         const val ANDROIDX_TEST = "androidx.test:core-ktx:${Version.coreKtx}"
         const val ARCH_CORE_TEST = "android.arch.core:core-testing:${Version.arch_core_test}"

@@ -60,6 +60,9 @@ dependencies {
     // gson
     implementation(Dependency.Gson.GSON)
 
+    // paging
+    implementation(Dependency.Pagination.PAGING)
+
     // test
     testImplementation(Dependency.Mock.MOCKITO)
     androidTestImplementation(Dependency.Mock.MOCKITO_ANDROID)
